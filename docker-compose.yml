@@ -46,9 +46,12 @@ services:
       KC_BOOTSTRAP_ADMIN_PASSWORD: admin
       KC_HOSTNAME: cengiztansel.duckdns.org
       KC_HTTP_RELATIVE_PATH: /auth
+      KC_HOSTNAME_STRICT: "false"
       KC_HOSTNAME_STRICT_HTTPS: "false"
     ports:
       - "8081:8080"
+    command: start-dev --hostname-strict=false --http-enabled=true
+
     volumes:
       - keycloak_data_final:/opt/keycloak/data
 
