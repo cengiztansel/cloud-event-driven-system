@@ -40,7 +40,7 @@ services:
   inventory-keycloak:
     image: quay.io/keycloak/keycloak:latest
     container_name: inventory-keycloak
-    command: start-dev --hostname-strict=false
+    command: start-dev --hostname-strict=false --http-enabled=true
     environment:
       KC_BOOTSTRAP_ADMIN_USERNAME: admin
       KC_BOOTSTRAP_ADMIN_PASSWORD: admin
@@ -50,8 +50,7 @@ services:
       KC_HOSTNAME_STRICT_HTTPS: "false"
     ports:
       - "8081:8080"
-    command: start-dev --hostname-strict=false --http-enabled=true
-
+    
     volumes:
       - keycloak_data_final:/opt/keycloak/data
 
