@@ -1,0 +1,88 @@
+version: '3.8'
+
+services:
+  # --- Veritabanı (Senin kullandığın imaj ve kimlik bilgileriyle) ---
+  inventory-db:
+    image: postgres:16-alpine
+    container_name: inventory-db
+    environment:
+      POSTGRES_DB: inventory_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: St716944
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d inventory_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - db_data_final:/var/lib/postgresql/data
+
+  # --- Mesaj Kuyruğu ---
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    container_name: inventory-zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    container_name: inventory-kafka
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+
+  # --- Güvenlik (Keycloak) ---
+  inventory-keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    container_name: inventory-keycloak
+    command: start-dev --hostname-strict=false
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+      KC_HOSTNAME: cengiztansel.duckdns.org
+      KC_HTTP_RELATIVE_PATH: /auth
+      KC_HOSTNAME_STRICT_HTTPS: "false"
+    ports:
+      - "8081:8080"
+    volumes:
+      - keycloak_data_final:/opt/keycloak/data
+
+
+  # --- Backend ---
+  inventory-backend:
+    build: ./inventory-service
+    container_name: inventory-backend
+    ports:
+      - "8080:8080"
+    depends_on:
+      inventory-db:
+        condition: service_healthy
+      inventory-keycloak:
+        condition: service_started
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://inventory-db:5432/inventory_db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: St716944
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: http://inventory-keycloak:8080/auth/realms/inventory-realm
+
+  # --- Frontend ---
+  inventory-frontend:
+    build: ./inventory-frontend
+    container_name: inventory-frontend
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_BASE_URL=http://cengiztansel.duckdns.org:8080
+    depends_on:
+      - inventory-backend
+
+# --- Kalıcı Hafıza Tanımları (İsimleri değiştirdik ki eskisini görmesin) ---
+volumes:
+  keycloak_data_final:
+  db_data_final:
