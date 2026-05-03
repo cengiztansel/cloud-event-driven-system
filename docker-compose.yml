@@ -19,14 +19,14 @@ services:
 
   # --- Mesaj Kuyruğu ---
   zookeeper:
-    image: bitnami/zookeeper:3.9.2
+    image: bitnami/zookeeper:3.8.3
     container_name: inventory-zookeeper
     environment:
       - ZOO_PORT_NUMBER=2181
       - ALLOW_ANONYMOUS_LOGIN=yes
 
   inventory-kafka:
-    image: bitnami/kafka:3.7.0
+    image: bitnami/kafka:3.6.1
     container_name: inventory-kafka
     depends_on:
       - zookeeper
