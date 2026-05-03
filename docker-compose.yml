@@ -22,7 +22,8 @@ services:
     image: bitnami/zookeeper:3.9.2
     container_name: inventory-zookeeper
     environment:
-      ZOO_PORT_NUMBER=2181
+      - ZOO_PORT_NUMBER=2181
+      - ALLOW_ANONYMOUS_LOGIN=yes
 
   inventory-kafka:
     image: bitnami/kafka:3.7.0
@@ -37,7 +38,7 @@ services:
       - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=PLAINTEXT
       - KAFKA_CFG_OFFSETS_TOPIC_REPLICATION_FACTOR=1
     ports:
-      - "9092:9092"
+        - "9092:9092"
 
   # --- Güvenlik (Keycloak) ---
   inventory-keycloak:
