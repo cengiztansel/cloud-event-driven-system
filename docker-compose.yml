@@ -26,7 +26,7 @@ services:
       - ALLOW_ANONYMOUS_LOGIN=yes
 
   inventory-kafka:
-    image: bitnami/kafka:3.6.1
+    image: bitnami/kafka:latest
     container_name: inventory-kafka
     depends_on:
       - zookeeper
