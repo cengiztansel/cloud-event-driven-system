@@ -16,6 +16,7 @@ export default defineConfig({
       port: 5173,
       strictPort: true,
       allowedHosts: true // Tüm hostlara izin ver (Test aşaması için en garantisi budur)
+      // veya allowedHosts: ["cengiztansel.duckdns.org"]
     }
 
 })
