@@ -19,7 +19,7 @@ services:
 
   # --- Mesaj Kuyruğu ---
   zookeeper:
-    image: bitnami/zookeeper:3.8.3
+    image: bitnami/zookeeper:latest
     container_name: inventory-zookeeper
     environment:
       - ZOO_PORT_NUMBER=2181
@@ -42,7 +42,7 @@ services:
 
   # --- Güvenlik (Keycloak) ---
   inventory-keycloak:
-    image: bitnami/keycloak:24.0.1
+    image: bitnami/keycloak:latest
     container_name: inventory-keycloak
  #   command: start-dev --hostname-strict=false --http-enabled=true
     command:
