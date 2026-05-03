@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   # --- Veritabanı (Senin kullandığın imaj ve kimlik bilgileriyle) ---
   inventory-db:
@@ -21,19 +19,19 @@ services:
 
   # --- Mesaj Kuyruğu ---
   zookeeper:
-    image: confluentinc/cp-zookeeper:latest
+    image: bitnami/zookeeper:3.9.2
     container_name: inventory-zookeeper
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
 
   kafka:
-    image: confluentinc/cp-kafka:7.4.0
+    image: bitnami/kafka:3.7.0
     container_name: inventory-kafka
     depends_on:
       - zookeeper
     environment:
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://cengiztansel.duckdns.org:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://inventory-kafka:9092,PLAINTEXT_HOST://cengiztansel.duckdns.org:9092
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
@@ -42,7 +40,7 @@ services:
 
   # --- Güvenlik (Keycloak) ---
   inventory-keycloak:
-    image: quay.io/keycloak/keycloak:latest
+    image: bitnami/keycloak:24.0.1
     container_name: inventory-keycloak
  #   command: start-dev --hostname-strict=false --http-enabled=true
     command:
