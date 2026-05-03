@@ -38,15 +38,11 @@ services:
       - "9092:9092"
     environment:
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-
-      # container içi
-      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
-
-      # dış erişim (DuckDNS)
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://cengiztansel.duckdns.org:9092
-
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT
-      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      # İçerisi ve dışarısı için iki ayrı dinleyici tanımlıyoruz:
+      KAFKA_LISTENERS: INTERNAL://0.0.0.0:29092,EXTERNAL://0.0.0.0:9092
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://inventory-kafka:29092,EXTERNAL://cengiztansel.duckdns.org:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
 
   # --- KEYCLOAK ---
@@ -59,8 +55,10 @@ services:
       - --hostname=cengiztansel.duckdns.org
       - --hostname-strict=false
     environment:
-      KEYCLOAK_ADMIN: admin
-      KEYCLOAK_ADMIN_PASSWORD: admin
+#      KEYCLOAK_ADMIN: admin
+#      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
     ports:
       - "8081:8080"
     volumes:
