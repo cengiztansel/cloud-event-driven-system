@@ -50,10 +50,10 @@ services:
       - --hostname=cengiztansel.duckdns.org
       - --hostname-strict=false
     environment:
-#      KEYCLOAK_ADMIN: admin
-#      KEYCLOAK_ADMIN_PASSWORD: admin
-      KC_BOOTSTRAP_ADMIN_USERNAME: admin
-      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+#      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+#      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
     ports:
       - "8081:8080"
     volumes:
@@ -74,7 +74,8 @@ services:
         condition: service_started
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://inventory-db:5432/inventory_db
-      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_USERNAME
+      : postgres
       SPRING_DATASOURCE_PASSWORD: St716944
 
       SPRING_KAFKA_BOOTSTRAP_SERVERS: inventory-kafka:9092
