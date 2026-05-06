@@ -49,12 +49,18 @@ services:
       - --http-enabled=true
       - --hostname=cengiztansel.duckdns.org
       - --hostname-strict=false
-      - --hostname-strict-https=false  # ŞİFREYİ İPTAL EDEN SATIR BU
+      - --proxy-headers=xforwarded # Bulut ortamı için kritik
+      - --http-relative-path=/auth # Frontend'in beklediği eski yolu geri kazandırır
+  #    - --hostname-strict-https=false  # ŞİFREYİ İPTAL EDEN SATIR BU
     environment:
-      KEYCLOAK_ADMIN: admin
-      KEYCLOAK_ADMIN_PASSWORD: admin
-#      KC_BOOTSTRAP_ADMIN_USERNAME: admin
-#      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+#      KEYCLOAK_ADMIN: admin
+#      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+      KC_HOSTNAME: cengiztansel.duckdns.org
+      KC_HTTP_ENABLED: "true"
+      KC_HOSTNAME_STRICT_HTTPS: "false"
+      KC_PROXY: edge # HTTPS zorunluluğunu kökten çözen ayar budur
     ports:
       - "8081:8080"
     volumes:
@@ -81,8 +87,8 @@ services:
       SPRING_KAFKA_BOOTSTRAP_SERVERS: inventory-kafka:9092
       SPRING_KAFKA_PRODUCER_RETRIES: 5
 
-      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: http://inventory-keycloak:8080/realms/inventory-realm
-
+#      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: http://inventory-keycloak:8080/realms/inventory-realm
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: http://inventory-keycloak:8080/auth/realms/inventory-realm
   # --- FRONTEND ---
   inventory-frontend:
     build: ./inventory-frontend
