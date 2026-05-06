@@ -19,31 +19,26 @@ services:
     volumes:
       - db_data_final:/var/lib/postgresql/data
 
-  # --- ZOOKEEPER (Apache) ---
-  zookeeper:
-    image: zookeeper:3.9.1
-    container_name: inventory-zookeeper
-    environment:
-      ZOO_CLIENT_PORT: 2181
-    ports:
-      - "2181:2181"
-
+  # --- ZOOKEEPER (Apache) --->  silindi
   # --- KAFKA (Apache) ---
   inventory-kafka:
     image: apache/kafka:3.7.1
     container_name: inventory-kafka
-    depends_on:
-      - zookeeper
     ports:
       - "9092:9092"
     environment:
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      # İçerisi ve dışarısı için iki ayrı dinleyici tanımlıyoruz:
-      KAFKA_LISTENERS: INTERNAL://0.0.0.0:29092,EXTERNAL://0.0.0.0:9092
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+      # İç, Dış ve Controller (KRaft beyni) için 3 ayrı dinleyici:
+      KAFKA_LISTENERS: INTERNAL://0.0.0.0:29092,EXTERNAL://0.0.0.0:9092,CONTROLLER://0.0.0.0:9093
       KAFKA_ADVERTISED_LISTENERS: INTERNAL://inventory-kafka:29092,EXTERNAL://cengiztansel.duckdns.org:9092
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
-      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT,CONTROLLER:PLAINTEXT
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@inventory-kafka:9093
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      # KRaft'ın çalışması için zorunlu Cluster ID (rastgele bir metin):
+      CLUSTER_ID: "MkU3OEVBNTcwNTJENDM2Qk"
+
 
   # --- KEYCLOAK ---
   inventory-keycloak:
