@@ -57,7 +57,10 @@ services:
 #      KEYCLOAK_ADMIN_PASSWORD: admin
       KC_BOOTSTRAP_ADMIN_USERNAME: admin
       KC_BOOTSTRAP_ADMIN_PASSWORD: admin
-      KC_HOSTNAME: cengiztansel.duckdns.org
+    #  KC_HOSTNAME: cengiztansel.duckdns.org
+      KC_HOSTNAME_URL: http://cengiztansel.duckdns.org:8081/auth
+      KC_HOSTNAME_ADMIN_URL: http://cengiztansel.duckdns.org:8081/auth
+
       KC_HTTP_ENABLED: "true"
       KC_HOSTNAME_STRICT_HTTPS: "false"
       KC_PROXY: edge # HTTPS zorunluluğunu kökten çözen ayar budur
