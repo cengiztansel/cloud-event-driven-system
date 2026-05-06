@@ -49,6 +49,7 @@ services:
       - --http-enabled=true
       - --hostname=cengiztansel.duckdns.org
       - --hostname-strict=false
+      - --hostname-strict-https=false  # ŞİFREYİ İPTAL EDEN SATIR BU
     environment:
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
