@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/api/products")
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://cengiztansel.duckdns.org:5173")
 public class ProductController {
 
     private final ProductRepository productRepository;
