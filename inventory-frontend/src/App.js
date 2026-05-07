@@ -9,7 +9,7 @@ function App() {
 
   const addProduct = async () => {
     try {
-      const response = await fetch('http://localhost:8080/api/products', {
+      const response = await fetch('http://cengiztansel.duckdns.org:8080/api/products', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -92,6 +92,7 @@ services:
 
 #      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: http://inventory-keycloak:8080/realms/inventory-realm
       SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: http://inventory-keycloak:8080/auth/realms/inventory-realm
+
   # --- FRONTEND ---
   inventory-frontend:
     build: ./inventory-frontend
