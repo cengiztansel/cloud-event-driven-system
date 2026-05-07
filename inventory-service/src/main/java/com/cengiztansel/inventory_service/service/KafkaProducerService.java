@@ -6,11 +6,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
+
 @Service
 @RequiredArgsConstructor
 @Slf4j // Konsola log yazmak için kullanıyoruz
 public class KafkaProducerService {
 
+    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(KafkaProducerService.class);
     // Spring Kafka'nın bize sunduğu ana mesajlaşma aracı
     private final KafkaTemplate<String, String> kafkaTemplate;
 
