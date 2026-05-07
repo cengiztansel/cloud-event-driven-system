@@ -14,7 +14,7 @@ function App() {
         headers: {
           'Content-Type': 'application/json',
           // İşte sihir burada! Keycloak JS kütüphanesi token'ı bizim için arka planda tutuyor.
-          'Authorization': `Bearer ${keycloak.token}`
+        //  'Authorization': `Bearer ${keycloak.token}`
         },
         body: JSON.stringify({ name: "React'ten Gelen Harika Urun", price: 2026.0 })
       });

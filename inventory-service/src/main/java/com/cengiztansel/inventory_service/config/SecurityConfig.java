@@ -27,6 +27,7 @@ public class SecurityConfig {
     }
 */
 
+    /*
     @Bean
 public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http
@@ -44,6 +45,28 @@ public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Excepti
         .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()));
 
     return http.build();
-}
+}  */
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+                .csrf(csrf -> csrf.disable()) // CSRF'yi kapat
+                .cors(cors -> cors.configure(http)) // CORS'a izin ver
+                .authorizeHttpRequests(auth -> auth
+                        .anyRequest().permitAll() // Tüm istekler serbest
+                );
+        return http.build();
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(List.of("*")); // Vitrin için her yere izin ver
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(List.of("*"));
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
 
 }

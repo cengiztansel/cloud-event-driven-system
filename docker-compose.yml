@@ -40,35 +40,6 @@ services:
       # KRaft'ın çalışması için zorunlu Cluster ID (rastgele bir metin):
       CLUSTER_ID: "MkU3OEVBNTcwNTJENDM2Qk"
 
-
-  # --- KEYCLOAK ---
-  inventory-keycloak:
-    image: quay.io/keycloak/keycloak:24.0.0
-    container_name: inventory-keycloak
-    command:
-      - start-dev
-      - --http-enabled=true
-#      - --hostname=cengiztansel.duckdns.org
-      - --hostname-strict=false
-      - --hostname-strict-https=false  # ŞİFREYİ İPTAL EDEN SATIR BU
-#      - --proxy-headers=xforwarded # Bulut ortamı için kritik
-      - --http-relative-path=/auth # Frontend'in beklediği eski yolu geri kazandırır
-
-    environment:
-#      KEYCLOAK_ADMIN: admin
-#      KEYCLOAK_ADMIN_PASSWORD: admin
-      KC_BOOTSTRAP_ADMIN_USERNAME: admin
-      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
-      KC_HOSTNAME_URL: http://cengiztansel.duckdns.org:8081/auth
-      KC_HOSTNAME_ADMIN_URL: http://cengiztansel.duckdns.org:8081/auth
-      KC_HTTP_ENABLED: "true"
-      KC_HOSTNAME_STRICT_HTTPS: "false"
-      KC_PROXY: edge # HTTPS zorunluluğunu kökten çözen ayar budur
-    ports:
-      - "8081:8080"
-    volumes:
-      - keycloak_data_final:/opt/keycloak/data
-
   # --- BACKEND ---
   inventory-backend:
     build: ./inventory-service
@@ -91,8 +62,7 @@ services:
       SPRING_KAFKA_PRODUCER_RETRIES: 5
 
 #      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: http://inventory-keycloak:8080/realms/inventory-realm
-      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: http://inventory-keycloak:8080/auth/realms/inventory-realm
-
+     
   # --- FRONTEND ---
   inventory-frontend:
     build: ./inventory-frontend

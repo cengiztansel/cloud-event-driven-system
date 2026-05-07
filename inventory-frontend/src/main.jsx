@@ -12,8 +12,16 @@ createRoot(document.getElementById('root')).render(
   </StrictMode>,
 )
 
+// Keycloak kısmını kapat, direkt uygulamayı başlat
 const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);
 
+/*
+const root = ReactDOM.createRoot(document.getElementById('root'));
 // KEYCLOAK INIT KODU BURASI
 keycloak.init({
   onLoad: 'login-required', // Sayfa açılır açılmaz login zorunlu olsun
@@ -31,10 +39,13 @@ keycloak.init({
   } else {
     // Eğer bir şekilde giriş başarısızsa sayfayı yenile (Keycloak otomatik yönlendirir)
     window.location.reload();
+
   }
 
 }).catch((error) => {
   console.error("Keycloak Başlatılamadı:", error);
   // Hata durumunda ekrana bir mesaj basabilirsin
   root.render(<div>Güvenlik servisi şu an ulaşılamaz durumda. Lütfen bekleyin...</div>);
-});
+}
+);
+*/
