@@ -51,8 +51,6 @@ services:
         condition: service_healthy
       inventory-kafka:
         condition: service_started
-      inventory-keycloak:
-        condition: service_started
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://inventory-db:5432/inventory_db
       SPRING_DATASOURCE_USERNAME: postgres
@@ -62,7 +60,7 @@ services:
       SPRING_KAFKA_PRODUCER_RETRIES: 5
 
 #      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: http://inventory-keycloak:8080/realms/inventory-realm
-     
+
   # --- FRONTEND ---
   inventory-frontend:
     build: ./inventory-frontend
@@ -75,5 +73,5 @@ services:
       - inventory-backend
 
 volumes:
-  keycloak_data_final:
+#  keycloak_data_final:
   db_data_final:
